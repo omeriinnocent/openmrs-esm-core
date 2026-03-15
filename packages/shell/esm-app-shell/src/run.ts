@@ -105,7 +105,7 @@ async function setupApps() {
                   [key.slice(localStorageRoutesPrefix.length)]: maybeOpenmrsRoutes,
                 }),
               );
-            } else if (typeof maybeOpenmrsRoutes === 'string' && maybeOpenmrsRoutes.startsWith('http')) {
+            } else if (typeof maybeOpenmrsRoutes === 'string' && maybeOpenmrsRoutes.startsWith('https://')) {
               promises.push(
                 openmrsFetch<OpenmrsAppRoutes>(maybeOpenmrsRoutes)
                   .then((response) => {
@@ -133,7 +133,7 @@ async function setupApps() {
               console.warn(
                 `Route override for ${key.slice(
                   localStorageRoutesPrefix.length,
-                )} could not be handled as it was neither a JSON object nor a URL string`,
+                )} could not be handled as it was neither a JSON object nor a secure HTTPS URL string`,
                 localOverride,
               );
             }
