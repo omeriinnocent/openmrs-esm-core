@@ -2,7 +2,7 @@
 
 # Interface: Patient
 
-Defined in: [packages/framework/esm-emr-api/src/types/patient-resource.ts:15](https://github.com/openmrs/openmrs-esm-core/blob/main/packages/framework/esm-emr-api/src/types/patient-resource.ts#L15)
+Defined in: [packages/framework/esm-emr-api/src/types/patient-resource.ts:15](https://github.com/omeriinnocent/openmrs-esm-core/blob/main/packages/framework/esm-emr-api/src/types/patient-resource.ts#L15)
 
 Superclass for all Openmrs Resources, with strict typings.
 If the subclass does not have all attributes (including optional ones)
@@ -42,7 +42,7 @@ Defined in: packages/framework/esm-api/dist/types/openmrs-resource.d.ts:12
 
 > `optional` **identifiers**: [`PatientIdentifier`](PatientIdentifier.md)[]
 
-Defined in: [packages/framework/esm-emr-api/src/types/patient-resource.ts:16](https://github.com/openmrs/openmrs-esm-core/blob/main/packages/framework/esm-emr-api/src/types/patient-resource.ts#L16)
+Defined in: [packages/framework/esm-emr-api/src/types/patient-resource.ts:16](https://github.com/omeriinnocent/openmrs-esm-core/blob/main/packages/framework/esm-emr-api/src/types/patient-resource.ts#L16)
 
 ***
 
@@ -62,7 +62,7 @@ Defined in: packages/framework/esm-api/dist/types/openmrs-resource.d.ts:13
 
 > `optional` **person**: `Person`
 
-Defined in: [packages/framework/esm-emr-api/src/types/patient-resource.ts:17](https://github.com/openmrs/openmrs-esm-core/blob/main/packages/framework/esm-emr-api/src/types/patient-resource.ts#L17)
+Defined in: [packages/framework/esm-emr-api/src/types/patient-resource.ts:17](https://github.com/omeriinnocent/openmrs-esm-core/blob/main/packages/framework/esm-emr-api/src/types/patient-resource.ts#L17)
 
 ***
 
@@ -94,4 +94,4 @@ Defined in: packages/framework/esm-api/dist/types/openmrs-resource.d.ts:11
 
 > `optional` **voided**: `boolean`
 
-Defined in: [packages/framework/esm-emr-api/src/types/patient-resource.ts:18](https://github.com/openmrs/openmrs-esm-core/blob/main/packages/framework/esm-emr-api/src/types/patient-resource.ts#L18)
+Defined in: [packages/framework/esm-emr-api/src/types/patient-resource.ts:18](https://github.com/omeriinnocent/openmrs-esm-core/blob/main/packages/framework/esm-emr-api/src/types/patient-resource.ts#L18)
