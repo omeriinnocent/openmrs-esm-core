@@ -120,9 +120,10 @@ function handleModalStateUpdate({ modalStack, modalContainer }: ModalState) {
           instance.parcel?.unmount?.();
           instance.container?.remove();
           setTimeout(() => {
+            const currentState = modalStore.getState();
             modalStore.setState({
-              modalContainer,
-              modalStack: modalStack.filter((x) => x !== instance),
+              ...currentState,
+              modalStack: currentState.modalStack.filter((x) => x !== instance),
             });
           }, 0);
           break;

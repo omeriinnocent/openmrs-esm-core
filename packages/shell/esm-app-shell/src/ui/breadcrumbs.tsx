@@ -36,11 +36,19 @@ export const CustomBreadcrumbItem: React.FC<CustomBreadcrumbItemProps> = ({ brea
   const [title, setTitle] = useState('');
 
   useEffect(() => {
+    let isMounted = true;
     if (typeof breadcrumbRegistration.settings.title === 'function') {
-      Promise.resolve(breadcrumbRegistration.settings.title(params)).then((res) => setTitle(res));
+      Promise.resolve(breadcrumbRegistration.settings.title(params)).then((res) => {
+        if (isMounted) {
+          setTitle(res);
+        }
+      });
     } else {
       setTitle(breadcrumbRegistration.settings.title);
     }
+    return () => {
+      isMounted = false;
+    };
   }, [breadcrumbRegistration, params]);
 
   return (
