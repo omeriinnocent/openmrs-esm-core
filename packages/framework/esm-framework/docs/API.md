@@ -3,6 +3,7 @@
 ## API
 
 - [makeUrl](functions/makeUrl.md)
+- [getSafeRedirectUrl](functions/getSafeRedirectUrl.md)
 - [openmrsFetch](functions/openmrsFetch.md)
 - [openmrsObservableFetch](functions/openmrsObservableFetch.md)
 - [OpenmrsFetchError](classes/OpenmrsFetchError.md)

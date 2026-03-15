@@ -2,7 +2,7 @@
 
 # Interface: FetchConfig
 
-Defined in: [packages/framework/esm-api/src/openmrs-fetch.ts:324](https://github.com/openmrs/openmrs-esm-core/blob/main/packages/framework/esm-api/src/openmrs-fetch.ts#L324)
+Defined in: [packages/framework/esm-api/src/openmrs-fetch.ts:351](https://github.com/omeriinnocent/openmrs-esm-core/blob/main/packages/framework/esm-api/src/openmrs-fetch.ts#L351)
 
 ## Extends
 
@@ -14,7 +14,7 @@ Defined in: [packages/framework/esm-api/src/openmrs-fetch.ts:324](https://github
 
 > `optional` **body**: `string` \| `FetchBody`
 
-Defined in: [packages/framework/esm-api/src/openmrs-fetch.ts:326](https://github.com/openmrs/openmrs-esm-core/blob/main/packages/framework/esm-api/src/openmrs-fetch.ts#L326)
+Defined in: [packages/framework/esm-api/src/openmrs-fetch.ts:353](https://github.com/omeriinnocent/openmrs-esm-core/blob/main/packages/framework/esm-api/src/openmrs-fetch.ts#L353)
 
 ***
 
@@ -50,7 +50,7 @@ A string indicating whether credentials will be sent with the request always, ne
 
 > `optional` **headers**: [`FetchHeaders`](FetchHeaders.md)
 
-Defined in: [packages/framework/esm-api/src/openmrs-fetch.ts:325](https://github.com/openmrs/openmrs-esm-core/blob/main/packages/framework/esm-api/src/openmrs-fetch.ts#L325)
+Defined in: [packages/framework/esm-api/src/openmrs-fetch.ts:352](https://github.com/omeriinnocent/openmrs-esm-core/blob/main/packages/framework/esm-api/src/openmrs-fetch.ts#L352)
 
 ***
 
