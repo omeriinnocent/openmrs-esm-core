@@ -39,6 +39,28 @@ export function makeUrl(path: string) {
 }
 
 /**
+ * Returns the URL only if it is same-origin (to prevent open redirect attacks).
+ * Returns null for cross-origin or invalid URLs.
+ *
+ * @param url The URL to validate.
+ * @returns The URL if it is same-origin, otherwise null.
+ */
+export function getSafeRedirectUrl(url: string | null): string | null {
+  if (!url) {
+    return null;
+  }
+  try {
+    const parsed = new URL(url, window.location.href);
+    if (parsed.origin === window.location.origin) {
+      return url;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * The openmrsFetch function is a wrapper around the
  * [browser's built-in fetch function](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch),
  * with extra handling for OpenMRS-specific API behaviors, such as
@@ -206,7 +228,10 @@ export function openmrsFetch<T = any>(path: string, fetchInit: FetchConfig = {})
         // by default, redirect to the url specified in the config.
         // If blank, use the location header from the response.
         // If that is also blank, use the default redirect url.
-        const location = redirectAuthFailure.url || response.headers.get('location') || defaultRedirectAuthFailureUrl;
+        const location =
+          redirectAuthFailure.url ||
+          getSafeRedirectUrl(response.headers.get('location')) ||
+          defaultRedirectAuthFailureUrl;
         navigate({ to: location });
 
         /* We sometimes don't really want this promise to resolve since there's no response data,
