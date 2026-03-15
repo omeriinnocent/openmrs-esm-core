@@ -2,7 +2,7 @@ import { isObservable } from 'rxjs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getConfig } from '@openmrs/esm-config';
 import { navigate } from '@openmrs/esm-navigation';
-import { openmrsFetch, openmrsObservableFetch } from './openmrs-fetch';
+import { openmrsFetch, openmrsObservableFetch , getSafeRedirectUrl } from './openmrs-fetch';
 
 vi.mock('@openmrs/esm-navigation', () => ({
   clearHistory: vi.fn(),
@@ -289,5 +289,39 @@ describe('openmrsObservableFetch', () => {
 
     subscription.unsubscribe();
     expect(abortSignal.aborted).toBe(true);
+  });
+});
+
+
+describe('getSafeRedirectUrl', () => {
+  beforeEach(() => {
+    Object.defineProperty(window, 'location', {
+      writable: true,
+      value: { href: 'http://localhost/', origin: 'http://localhost' },
+    });
+  });
+
+  it('returns same-origin absolute URLs unchanged', () => {
+    expect(getSafeRedirectUrl('http://localhost/openmrs/spa/login')).toBe('http://localhost/openmrs/spa/login');
+  });
+
+  it('returns same-origin relative URLs unchanged', () => {
+    expect(getSafeRedirectUrl('/openmrs/spa/login')).toBe('/openmrs/spa/login');
+  });
+
+  it('returns null for cross-origin URLs', () => {
+    expect(getSafeRedirectUrl('https://evil.example.com/phish')).toBeNull();
+  });
+
+  it('returns null for null input', () => {
+    expect(getSafeRedirectUrl(null)).toBeNull();
+  });
+
+  it('returns null for empty string', () => {
+    expect(getSafeRedirectUrl('')).toBeNull();
+  });
+
+  it('returns null for javascript: protocol URLs', () => {
+    expect(getSafeRedirectUrl('javascript:alert(1)')).toBeNull();
   });
 });

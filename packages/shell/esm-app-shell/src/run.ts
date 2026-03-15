@@ -105,7 +105,7 @@ async function setupApps() {
                   [key.slice(localStorageRoutesPrefix.length)]: maybeOpenmrsRoutes,
                 }),
               );
-            } else if (typeof maybeOpenmrsRoutes === 'string' && maybeOpenmrsRoutes.startsWith('http')) {
+            } else if (typeof maybeOpenmrsRoutes === 'string' && maybeOpenmrsRoutes.startsWith('https://')) {
               promises.push(
                 openmrsFetch<OpenmrsAppRoutes>(maybeOpenmrsRoutes)
                   .then((response) => {
