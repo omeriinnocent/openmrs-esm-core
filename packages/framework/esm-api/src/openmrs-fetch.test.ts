@@ -2,7 +2,7 @@ import { isObservable } from 'rxjs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getConfig } from '@openmrs/esm-config';
 import { navigate } from '@openmrs/esm-navigation';
-import { openmrsFetch, openmrsObservableFetch } from './openmrs-fetch';
+import { getSafeRedirectUrl, openmrsFetch, openmrsObservableFetch } from './openmrs-fetch';
 
 vi.mock('@openmrs/esm-navigation', () => ({
   clearHistory: vi.fn(),
@@ -235,6 +235,101 @@ describe('openmrsFetch', () => {
     expect(mockNavigate.mock.calls[0][0]).toStrictEqual({
       to: '/openmrs/spa/login',
     });
+  });
+
+  it('falls back to defaultRedirectAuthFailureUrl when location header points to an external URL', async () => {
+    mockGetConfig.mockResolvedValueOnce({
+      redirectAuthFailure: {
+        enabled: true,
+        url: '',
+        errors: [401],
+        resolvePromise: true,
+      },
+    });
+
+    // @ts-ignore
+    window.fetch.mockReturnValue(
+      Promise.resolve({
+        ok: false,
+        status: 401,
+        statusText: 'You are not authorized',
+        headers: {
+          get: (name: string) => (name === 'location' ? 'https://evil.example.com/phishing' : null),
+        },
+        text: () => Promise.resolve(''),
+      }),
+    );
+
+    await openmrsFetch('/ws/rest/v1/session');
+
+    // Should NOT redirect to the external URL
+    expect(mockNavigate.mock.calls[0][0]).not.toStrictEqual({
+      to: 'https://evil.example.com/phishing',
+    });
+  });
+
+  it('uses a same-origin location header as redirect target when no config URL is set', async () => {
+    mockGetConfig.mockResolvedValueOnce({
+      redirectAuthFailure: {
+        enabled: true,
+        url: '',
+        errors: [401],
+        resolvePromise: true,
+      },
+    });
+
+    Object.defineProperty(window, 'location', {
+      writable: true,
+      value: { origin: 'http://localhost', assign: vi.fn() },
+    });
+
+    // @ts-ignore
+    window.fetch.mockReturnValue(
+      Promise.resolve({
+        ok: false,
+        status: 401,
+        statusText: 'You are not authorized',
+        headers: {
+          get: (name: string) => (name === 'location' ? 'http://localhost/openmrs/spa/login' : null),
+        },
+        text: () => Promise.resolve(''),
+      }),
+    );
+
+    await openmrsFetch('/ws/rest/v1/session');
+
+    expect(mockNavigate.mock.calls[0][0]).toStrictEqual({
+      to: 'http://localhost/openmrs/spa/login',
+    });
+  });
+});
+
+describe('getSafeRedirectUrl', () => {
+  beforeEach(() => {
+    Object.defineProperty(window, 'location', {
+      writable: true,
+      value: { origin: 'http://localhost' },
+    });
+  });
+
+  it('returns the URL when it is same-origin', () => {
+    expect(getSafeRedirectUrl('http://localhost/openmrs/spa/login')).toBe('http://localhost/openmrs/spa/login');
+  });
+
+  it('returns the URL when it is a relative path', () => {
+    expect(getSafeRedirectUrl('/openmrs/spa/login')).toBe('/openmrs/spa/login');
+  });
+
+  it('returns null for an external URL', () => {
+    expect(getSafeRedirectUrl('https://evil.example.com/phishing')).toBeNull();
+  });
+
+  it('returns null for a null input', () => {
+    expect(getSafeRedirectUrl(null)).toBeNull();
+  });
+
+  it('returns null for an empty string', () => {
+    expect(getSafeRedirectUrl('')).toBeNull();
   });
 });
 
